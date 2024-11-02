@@ -19,7 +19,7 @@ export const connect = async () => {
 
   if (!cached?.promise) {
     cached!.promise = mongoose.connect(MONGODB_URL, {
-      dbName: "clerkauth",
+      dbName: "clerkauth-db",
       bufferCommands: false,
       connectTimeoutMS: 30000,
     });
