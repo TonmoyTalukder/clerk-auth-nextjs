@@ -1,5 +1,5 @@
 {
-  "name": "clerk-auth-v5-nextjs",
+  "name": "clerk-auth-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,16 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.0.2",
+    "@clerk/themes": "^2.1.39",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.0",
+    "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "next": "15.0.2"
+    "svix": "^1.37.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
-    "eslint-config-next": "15.0.2"
+    "eslint-config-next": "15.0.2",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5"
   }
 }
