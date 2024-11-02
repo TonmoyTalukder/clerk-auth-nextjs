@@ -49,33 +49,45 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   if (eventType === "user.created") {
-    const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
-
-    const user: IUser = {
-      clerkId: id,
-      email: email_addresses[0].email_address,
-      username: username!,
-      photo: image_url!,
-      firstName: first_name!,
-      lastName: last_name!,
-    };
-
-    console.log(user);
-
-    const newUser = await createUser(user!);
-
-    if (newUser) {
-      // Access users property by awaiting clerkClient and typing it accurately
+    try {
+      const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
+  
+      if (!email_addresses || email_addresses.length === 0) {
+        console.error("No email addresses provided");
+        return new Response("No email addresses", { status: 400 });
+      }
+  
+      const user: IUser = {
+        clerkId: id,
+        email: email_addresses[0].email_address,
+        username: username || "default_username", // Provide a fallback
+        photo: image_url || "default_photo_url", // Provide a fallback
+        firstName: first_name || "",
+        lastName: last_name || "",
+      };
+  
+      console.log("Creating user:", user);
+  
+      const newUser = await createUser(user);
+      if (!newUser) {
+        console.error("User creation failed");
+        return new Response("Failed to create user", { status: 500 });
+      }
+  
       const client = await clerkClient();
       await client.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
         },
       });
+  
+      return NextResponse.json({ message: "New user created", user: newUser });
+    } catch (err) {
+      console.error("Error processing user.created event:", err);
+      return new Response("Internal server error", { status: 500 });
     }
-
-    return NextResponse.json({ message: "New user created", user: newUser });
   }
+  
 
   console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
